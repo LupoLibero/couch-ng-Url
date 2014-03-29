@@ -1,11 +1,16 @@
-angular.module('url').
-factory('url', ($location, $route) ->
+ng.factory('url', ($location, $route) ->
   return {
     prefix: ->
       if $location.$$html5
         return ''
       else
         return '#'
+
+    redirect: (name, params = {}) ->
+      route = this.getRouteByName(name)
+      route = this.inject(params, route)
+      route = route.replace('%23', '#')
+      $location.path(route)
 
     get: (name, params = {}) ->
       route = this.getRouteByName(name)
